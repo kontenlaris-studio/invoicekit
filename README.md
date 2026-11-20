@@ -42,4 +42,4 @@ MIT — see `LICENSE`.
 
 ## Also on SkillSafe
 
-The InvoiceKit engine is published as a scan-verified skill with a hosted app: [InvoiceKit Maker](https://invoicekit-maker.skillsafe.ai) · skill [@kontenlaris-studio/invoice-generator](https://skillsafe.ai/share/shr_s5v0p0b4fkq9).
+The InvoiceKit engine is published as a scan-verified skill with a hosted app: [InvoiceKit Maker](https://invoicekit-maker.skillsafe.ai) · skill [@kontenlaris-studio/invoice-generator](https://skillsafe.ai/share/shr_swy46soxhxui).
