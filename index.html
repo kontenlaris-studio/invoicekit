@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-accent="orange">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,18 +7,21 @@
 <meta name="description" content="Create a clean, professional invoice in your browser in under a minute. No sign-up, no server — your data never leaves your device. Print or save as PDF free.">
 <style>
   :root{
-    --navy:#0a1931; --navy2:#10254a; --orange:#ff7a00; --ink:#14213d; --mut:#66788f;
-    --line:#e3e9f2; --bg:#f4f6fb; --card:#ffffff; --ok:#0e7a3d;
-    --radius:14px; --shadow:0 10px 30px rgba(10,25,49,.10);
+    --navy:#0a1931; --navy2:#10254a; --ink:#14213d; --mut:#66788f;
+    --line:#e3e9f2; --bg:#f4f6fb; --card:#ffffff; --ok:#0e7a3d; --bad:#c0392b;
+    --acc:#ff7a00; --radius:14px; --shadow:0 10px 30px rgba(10,25,49,.10);
   }
+  html[data-accent="teal"]{--acc:#0e7a6d}
+  html[data-accent="violet"]{--acc:#6d28d9}
+  html[data-accent="rose"]{--acc:#e11d63}
   *{box-sizing:border-box}
   body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
   header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:34px 20px 30px}
   .wrap{max-width:1180px;margin:0 auto}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.2px}
-  .brand .dot{width:12px;height:12px;border-radius:3px;background:var(--orange)}
+  .brand .dot{width:12px;height:12px;border-radius:3px;background:var(--acc)}
   header h1{margin:16px 0 6px;font-size:32px;line-height:1.15}
-  header h1 em{color:var(--orange);font-style:normal}
+  header h1 em{color:var(--acc);font-style:normal}
   header p{margin:0;color:#c9d4e5;max-width:640px}
   .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
   .badge{border:1px solid rgba(255,255,255,.28);color:#e6edf3;border-radius:999px;padding:3px 11px;font-size:12.5px}
@@ -30,7 +33,7 @@
   .panel h2{margin:0 0 12px;font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--navy)}
   label{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 4px}
   input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fbfcfe}
-  input:focus,select:focus,textarea:focus{outline:2px solid rgba(255,122,0,.45);border-color:var(--orange);background:#fff}
+  input:focus,select:focus,textarea:focus{outline:2px solid color-mix(in srgb,var(--acc) 45%, transparent);border-color:var(--acc);background:#fff}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .items-head,.item-row{display:grid;grid-template-columns:1fr 62px 92px 34px;gap:8px;align-items:end}
   .items-head{font-size:12px;color:var(--mut);margin-top:6px}
@@ -38,16 +41,30 @@
   .icon-btn{border:1px solid var(--line);background:#fff;border-radius:9px;height:38px;cursor:pointer;color:#a11;font-size:16px}
   .btn{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600}
   .btn-ghost{background:#eef2f8;color:var(--navy)}
-  .btn-primary{background:var(--orange);color:#fff}
+  .btn-primary{background:var(--acc);color:#fff}
   .btn-dark{background:var(--navy);color:#fff}
+  .btn-small{padding:6px 10px;font-size:13px;border-radius:8px}
   .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .hint{font-size:12.5px;color:var(--mut);margin-top:10px}
+  .logo-row{display:flex;gap:10px;align-items:center;margin-top:6px}
+  .logo-row img{max-height:44px;max-width:120px;border:1px solid var(--line);border-radius:8px;padding:3px;background:#fff}
+  .inv-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+  .inv-item{display:flex;justify-content:space-between;gap:8px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:7px 10px;cursor:pointer;background:#fbfcfe;font-size:13.5px}
+  .inv-item.active{border-color:var(--acc);background:#fff7ef}
+  .inv-item .meta{color:var(--mut);font-size:12px}
+  .pill{border-radius:999px;padding:1px 9px;font-size:11.5px;font-weight:700}
+  .pill.paid{background:#e2f4e8;color:var(--ok)}
+  .pill.unpaid{background:#fdeaea;color:var(--bad)}
   /* Invoice preview */
-  .preview{padding:34px 38px;min-height:640px}
-  .inv-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--navy);padding-bottom:16px}
+  .preview{padding:34px 38px;min-height:640px;position:relative;overflow:hidden}
+  .inv-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--acc);padding-bottom:16px}
+  .inv-brand{display:flex;align-items:center;gap:14px}
+  .inv-brand img{max-height:56px;max-width:150px}
   .inv-title{font-size:30px;font-weight:800;letter-spacing:2px;color:var(--navy)}
   .inv-meta{text-align:right;color:var(--mut);font-size:13.5px}
   .inv-meta b{color:var(--ink)}
+  .stamp{position:absolute;top:120px;right:44px;transform:rotate(-12deg);border:4px solid var(--ok);color:var(--ok);font-weight:800;font-size:24px;letter-spacing:2px;padding:4px 18px;border-radius:8px;opacity:.85;text-transform:uppercase}
+  .stamp.unpaid{border-color:var(--bad);color:var(--bad)}
   .parties{display:flex;justify-content:space-between;gap:24px;margin:20px 0 6px;flex-wrap:wrap}
   .party h3{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
   .party .name{font-weight:700;font-size:16px}
@@ -59,17 +76,20 @@
   .totals{margin-left:auto;width:290px;margin-top:14px}
   .totals .row{display:flex;justify-content:space-between;padding:5px 0;color:var(--mut)}
   .totals .grand{border-top:2px solid var(--navy);margin-top:6px;padding-top:10px;font-size:17px;font-weight:800;color:var(--navy)}
-  .totals .grand span:last-child{color:var(--orange)}
-  .notes{margin-top:22px;color:var(--mut);font-size:13.5px;white-space:pre-wrap}
+  .totals .grand span:last-child{color:var(--acc)}
+  .block{margin-top:22px}
+  .block h4{margin:0 0 3px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
+  .block div{color:var(--mut);font-size:13.5px;white-space:pre-wrap}
   .inv-foot{margin-top:30px;border-top:1px solid var(--line);padding-top:10px;font-size:12px;color:var(--mut);display:flex;justify-content:space-between}
   footer{padding:24px 20px 40px;color:var(--mut);text-align:center;font-size:13px}
   footer a{color:var(--navy)}
   @media print{
-    header, .panel, footer, .actions-bar{display:none !important}
+    header, .panel, footer{display:none !important}
     body{background:#fff}
     main{padding:0}
     .grid{grid-template-columns:1fr}
     .preview{box-shadow:none;border:0;min-height:auto}
+    .preview, .stamp, th, .inv-top{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   }
 </style>
 </head>
@@ -77,172 +97,375 @@
 <header>
   <div class="wrap">
     <div class="brand"><span class="dot"></span>InvoiceKit</div>
-    <h1>A professional invoice,<br>in <em>under a minute</em>.</h1>
-    <p>Fill the form, watch the invoice build itself, then print or save it as PDF. No sign-up, no server — everything happens in your browser and is saved only on your device.</p>
-    <div class="badges"><span class="badge">100% free</span><span class="badge">No account</span><span class="badge">Private by design</span><span class="badge">USD · IDR · EUR · GBP · SGD</span></div>
+    <h1 id="h-title">A professional invoice,<br>in <em>under a minute</em>.</h1>
+    <p id="h-sub">Fill the form, watch the invoice build itself, then print or save it as PDF. No sign-up, no server — everything happens in your browser and is saved only on your device.</p>
+    <div class="badges"><span class="badge" data-i="bFree">100% free</span><span class="badge" data-i="bNoAcc">No account</span><span class="badge" data-i="bPriv">Private by design</span><span class="badge">USD · IDR · EUR · GBP · SGD · JPY · AUD · MYR</span></div>
   </div>
 </header>
 
 <main>
   <div class="wrap grid">
     <section class="card panel" aria-label="Invoice details">
-      <h2>Your business</h2>
-      <label>Business name</label><input id="f-biz" value="Kontenlaris Studio">
-      <label>Business details (address, email, tax id)</label><textarea id="f-bizmeta" rows="2">kontenlaris.studio@gmail.com</textarea>
-
-      <h2 style="margin-top:20px">Client</h2>
-      <label>Client name</label><input id="f-client" placeholder="e.g. PT Sinar Abadi">
-      <label>Client details</label><textarea id="f-clientmeta" rows="2" placeholder="Address, email"></textarea>
-
-      <h2 style="margin-top:20px">Invoice</h2>
+      <h2 data-i="sSettings">Settings</h2>
       <div class="two">
-        <div><label>Invoice number</label><input id="f-number" value="INV-001"></div>
-        <div><label>Currency</label>
+        <div><label data-i="lLang">Language</label>
+          <select id="f-lang"><option value="en">English</option><option value="id">Bahasa Indonesia</option></select></div>
+        <div><label data-i="lAccent">Accent color</label>
+          <select id="f-accent">
+            <option value="orange" data-i="aOrange">Orange</option><option value="teal" data-i="aTeal">Teal</option>
+            <option value="violet" data-i="aViolet">Violet</option><option value="rose" data-i="aRose">Rose</option>
+          </select></div>
+      </div>
+
+      <h2 style="margin-top:20px" data-i="sBiz">Your business</h2>
+      <label data-i="lBizName">Business name</label><input id="f-biz" value="Kontenlaris Studio">
+      <label data-i="lBizMeta">Business details (address, email, tax id)</label><textarea id="f-bizmeta" rows="2">kontenlaris.studio@gmail.com</textarea>
+      <label data-i="lLogo">Business logo</label>
+      <div class="logo-row">
+        <input id="f-logo" type="file" accept="image/*" style="flex:1">
+        <img id="logo-thumb" alt="" style="display:none">
+        <button class="btn btn-ghost btn-small" id="logo-remove" style="display:none" data-i="bRemoveLogo">Remove</button>
+      </div>
+
+      <h2 style="margin-top:20px" data-i="sClient">Client</h2>
+      <label data-i="lClientPick">Saved clients</label>
+      <div class="two">
+        <select id="f-clientpick"><option value="">—</option></select>
+        <div class="actions" style="margin-top:0">
+          <button class="btn btn-ghost btn-small" id="client-save" data-i="bSaveClient">Save client</button>
+          <button class="btn btn-ghost btn-small" id="client-del" data-i="bDelClient">Delete</button>
+        </div>
+      </div>
+      <label data-i="lClientName">Client name</label><input id="f-client" placeholder="e.g. PT Sinar Abadi">
+      <label data-i="lClientMeta">Client details</label><textarea id="f-clientmeta" rows="2" placeholder="Address, email"></textarea>
+
+      <h2 style="margin-top:20px" data-i="sInv">Invoice</h2>
+      <div class="two">
+        <div><label data-i="lNumber">Invoice number</label><input id="f-number" value="INV-001"></div>
+        <div><label data-i="lCurrency">Currency</label>
           <select id="f-currency">
             <option value="USD">USD — $</option><option value="IDR">IDR — Rp</option>
             <option value="EUR">EUR — €</option><option value="GBP">GBP — £</option>
-            <option value="SGD">SGD — S$</option>
+            <option value="SGD">SGD — S$</option><option value="JPY">JPY — ¥</option>
+            <option value="AUD">AUD — A$</option><option value="MYR">MYR — RM</option>
           </select></div>
-        <div><label>Issue date</label><input id="f-issued" type="date"></div>
-        <div><label>Due date</label><input id="f-due" type="date"></div>
+        <div><label data-i="lIssued">Issue date</label><input id="f-issued" type="date"></div>
+        <div><label data-i="lDue">Due date</label><input id="f-due" type="date"></div>
+        <div><label data-i="lStatus">Status</label>
+          <select id="f-status"><option value="unpaid" data-i="stUnpaid">Unpaid</option><option value="paid" data-i="stPaid">Paid</option></select></div>
       </div>
 
-      <h2 style="margin-top:20px">Items</h2>
-      <div class="items-head"><span>Description</span><span>Qty</span><span>Price</span><span></span></div>
+      <h2 style="margin-top:20px" data-i="sItems">Items</h2>
+      <div class="items-head"><span data-i="cDesc">Description</span><span data-i="cQty">Qty</span><span data-i="cPrice">Price</span><span></span></div>
       <div id="items"></div>
-      <div class="actions"><button class="btn btn-ghost" id="add-item">+ Add item</button></div>
+      <div class="actions"><button class="btn btn-ghost" id="add-item" data-i="bAddItem">+ Add item</button></div>
 
       <div class="two">
-        <div><label>Tax % (0 = none)</label><input id="f-tax" type="number" min="0" step="0.1" value="0"></div>
-        <div><label>Discount %</label><input id="f-discount" type="number" min="0" step="0.1" value="0"></div>
+        <div><label data-i="lTax">Tax % (0 = none)</label><input id="f-tax" type="number" min="0" step="0.1" value="0"></div>
+        <div><label data-i="lDiscount">Discount %</label><input id="f-discount" type="number" min="0" step="0.1" value="0"></div>
       </div>
 
-      <label>Notes (payment details, thank-you)</label>
-      <textarea id="f-notes" rows="3">Payment via bank transfer / PayPal. Thank you for your business.</textarea>
+      <label data-i="lPay">Payment instructions (bank account, QRIS, e-wallet)</label>
+      <textarea id="f-payinfo" rows="2" placeholder="BCA 1234567890 a.n. … / QRIS …"></textarea>
+      <label data-i="lNotes">Notes (thank-you, terms)</label>
+      <textarea id="f-notes" rows="2">Thank you for your business.</textarea>
+
+      <h2 style="margin-top:20px" data-i="sSaved">Saved invoices</h2>
+      <div class="inv-list" id="inv-list"></div>
+      <div class="actions">
+        <button class="btn btn-dark" id="inv-new" data-i="bNew">+ New invoice</button>
+        <button class="btn btn-ghost" id="inv-dup" data-i="bDup">Duplicate</button>
+        <button class="btn btn-ghost" id="inv-del" data-i="bDel">Delete</button>
+      </div>
 
       <div class="actions actions-bar">
-        <button class="btn btn-primary" id="print-btn">Print / Save PDF</button>
-        <button class="btn btn-ghost" id="reset-btn">Reset</button>
+        <button class="btn btn-primary" id="print-btn" data-i="bPrint">Print / Save PDF</button>
+        <button class="btn btn-ghost" id="export-btn" data-i="bExport">Export backup</button>
+        <button class="btn btn-ghost" id="import-btn" data-i="bImport">Import</button>
+        <input id="f-import" type="file" accept="application/json" style="display:none">
       </div>
-      <p class="hint">Your draft auto-saves in this browser. Nothing is uploaded anywhere.</p>
+      <p class="hint" data-i="hint">Everything auto-saves in this browser — invoices, clients, your business profile. Nothing is uploaded anywhere.</p>
     </section>
 
     <section class="card preview" aria-label="Invoice preview">
+      <div class="stamp" id="p-stamp">UNPAID</div>
       <div class="inv-top">
-        <div class="inv-title">INVOICE</div>
+        <div class="inv-brand"><img id="p-logo" alt="" style="display:none"><div class="inv-title" id="p-title">INVOICE</div></div>
         <div class="inv-meta">
-          <div>Number&nbsp; <b id="p-number"></b></div>
-          <div>Issued&nbsp; <b id="p-issued"></b></div>
-          <div>Due&nbsp; <b id="p-due"></b></div>
+          <div><span data-i="pNumber">Number</span>&nbsp; <b id="p-number"></b></div>
+          <div><span data-i="pIssued">Issued</span>&nbsp; <b id="p-issued"></b></div>
+          <div><span data-i="pDue">Due</span>&nbsp; <b id="p-due"></b></div>
         </div>
       </div>
       <div class="parties">
-        <div class="party"><h3>From</h3><div class="name" id="p-biz"></div><div id="p-bizmeta"></div></div>
-        <div class="party"><h3>Billed to</h3><div class="name" id="p-client"></div><div id="p-clientmeta"></div></div>
+        <div class="party"><h3 data-i="pFrom">From</h3><div class="name" id="p-biz"></div><div id="p-bizmeta"></div></div>
+        <div class="party"><h3 data-i="pTo">Billed to</h3><div class="name" id="p-client"></div><div id="p-clientmeta"></div></div>
       </div>
       <table>
-        <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Amount</th></tr></thead>
+        <thead><tr><th data-i="cDesc">Description</th><th class="num" data-i="cQty">Qty</th><th class="num" data-i="cPrice">Price</th><th class="num" data-i="cAmount">Amount</th></tr></thead>
         <tbody id="p-items"></tbody>
       </table>
       <div class="totals">
-        <div class="row"><span>Subtotal</span><span id="p-subtotal"></span></div>
-        <div class="row" id="row-discount"><span>Discount</span><span id="p-discount"></span></div>
-        <div class="row" id="row-tax"><span>Tax</span><span id="p-tax"></span></div>
-        <div class="row grand"><span>Total due</span><span id="p-total"></span></div>
+        <div class="row"><span data-i="tSub">Subtotal</span><span id="p-subtotal"></span></div>
+        <div class="row" id="row-discount"><span data-i="tDisc">Discount</span><span id="p-discount"></span></div>
+        <div class="row" id="row-tax"><span data-i="tTax">Tax</span><span id="p-tax"></span></div>
+        <div class="row grand"><span data-i="tTotal">Total due</span><span id="p-total"></span></div>
       </div>
-      <div class="notes" id="p-notes"></div>
-      <div class="inv-foot"><span>Made with InvoiceKit — free invoice generator</span><span id="p-foot-cur"></span></div>
+      <div class="block" id="block-pay"><h4 data-i="pPay">Payment</h4><div id="p-payinfo"></div></div>
+      <div class="block"><h4 data-i="pNotes">Notes</h4><div id="p-notes"></div></div>
+      <div class="inv-foot"><span data-i="foot">Made with InvoiceKit — free invoice generator</span><span id="p-foot-cur"></span></div>
     </section>
   </div>
 </main>
 
 <footer>
-  <div class="wrap">InvoiceKit by <a href="https://github.com/kontenlaris-studio">Kontenlaris Studio</a> · Free forever · Your data never leaves your device · <a href="https://github.com/kontenlaris-studio/invoicekit">Source on GitHub</a></div>
+  <div class="wrap">InvoiceKit by <a href="https://github.com/kontenlaris-studio">Kontenlaris Studio</a> · <span data-i="fFree">Free forever</span> · <span data-i="fPriv">Your data never leaves your device</span> · <a href="https://github.com/kontenlaris-studio/invoicekit">GitHub</a></div>
 </footer>
 
 <script>
 const $ = (id) => document.getElementById(id);
-const KEY = "invoicekit.draft.v1";
-const SYMBOLS = { USD: "$", IDR: "Rp", EUR: "€", GBP: "£", SGD: "S$" };
+const KEY2 = "invoicekit.v2", KEY1 = "invoicekit.draft.v1";
+const I18N = {
+  en: { bFree:"100% free", bNoAcc:"No account", bPriv:"Private by design", sSettings:"Settings", lLang:"Language", lAccent:"Accent color",
+    aOrange:"Orange", aTeal:"Teal", aViolet:"Violet", aRose:"Rose", sBiz:"Your business", lBizName:"Business name",
+    lBizMeta:"Business details (address, email, tax id)", lLogo:"Business logo", bRemoveLogo:"Remove", sClient:"Client",
+    lClientPick:"Saved clients", bSaveClient:"Save client", bDelClient:"Delete", lClientName:"Client name", lClientMeta:"Client details",
+    sInv:"Invoice", lNumber:"Invoice number", lCurrency:"Currency", lIssued:"Issue date", lDue:"Due date", lStatus:"Status",
+    stUnpaid:"Unpaid", stPaid:"Paid", sItems:"Items", cDesc:"Description", cQty:"Qty", cPrice:"Price", cAmount:"Amount",
+    bAddItem:"+ Add item", lTax:"Tax % (0 = none)", lDiscount:"Discount %", lPay:"Payment instructions (bank account, QRIS, e-wallet)",
+    lNotes:"Notes (thank-you, terms)", sSaved:"Saved invoices", bNew:"+ New invoice", bDup:"Duplicate", bDel:"Delete",
+    bPrint:"Print / Save PDF", bExport:"Export backup", bImport:"Import",
+    hint:"Everything auto-saves in this browser — invoices, clients, your business profile. Nothing is uploaded anywhere.",
+    pNumber:"Number", pIssued:"Issued", pDue:"Due", pFrom:"From", pTo:"Billed to", pPay:"Payment", pNotes:"Notes",
+    tSub:"Subtotal", tDisc:"Discount", tTax:"Tax", tTotal:"Total due", foot:"Made with InvoiceKit — free invoice generator",
+    fFree:"Free forever", fPriv:"Your data never leaves your device", invTitle:"INVOICE", stampPaid:"PAID", stampUnpaid:"UNPAID",
+    hTitle:'A professional invoice,<br>in <em>under a minute</em>.',
+    hSub:"Fill the form, watch the invoice build itself, then print or save it as PDF. No sign-up, no server — everything happens in your browser and is saved only on your device.",
+    curLabel:"Currency", confirmDel:"Delete this invoice?", confirmImport:"Import backup? This replaces all current invoices, clients and profile." },
+  id: { bFree:"100% gratis", bNoAcc:"Tanpa akun", bPriv:"Privat secara desain", sSettings:"Pengaturan", lLang:"Bahasa", lAccent:"Warna aksen",
+    aOrange:"Oranye", aTeal:"Teal", aViolet:"Ungu", aRose:"Merah muda", sBiz:"Bisnis kamu", lBizName:"Nama bisnis",
+    lBizMeta:"Detail bisnis (alamat, email, NPWP)", lLogo:"Logo bisnis", bRemoveLogo:"Hapus", sClient:"Klien",
+    lClientPick:"Klien tersimpan", bSaveClient:"Simpan klien", bDelClient:"Hapus", lClientName:"Nama klien", lClientMeta:"Detail klien",
+    sInv:"Faktur", lNumber:"Nomor faktur", lCurrency:"Mata uang", lIssued:"Tanggal terbit", lDue:"Jatuh tempo", lStatus:"Status",
+    stUnpaid:"Belum lunas", stPaid:"Lunas", sItems:"Item", cDesc:"Deskripsi", cQty:"Jml", cPrice:"Harga", cAmount:"Jumlah",
+    bAddItem:"+ Tambah item", lTax:"Pajak % (0 = tanpa)", lDiscount:"Diskon %", lPay:"Instruksi pembayaran (rekening bank, QRIS, e-wallet)",
+    lNotes:"Catatan (ucapan terima kasih, syarat)", sSaved:"Faktur tersimpan", bNew:"+ Faktur baru", bDup:"Duplikat", bDel:"Hapus",
+    bPrint:"Cetak / Simpan PDF", bExport:"Ekspor cadangan", bImport:"Impor",
+    hint:"Semua tersimpan otomatis di browser ini — faktur, klien, profil bisnis. Tidak ada yang diunggah ke mana pun.",
+    pNumber:"Nomor", pIssued:"Terbit", pDue:"Jatuh tempo", pFrom:"Dari", pTo:"Ditagihkan ke", pPay:"Pembayaran", pNotes:"Catatan",
+    tSub:"Subtotal", tDisc:"Diskon", tTax:"Pajak", tTotal:"Total tagihan", foot:"Dibuat dengan InvoiceKit — generator faktur gratis",
+    fFree:"Gratis selamanya", fPriv:"Data kamu tidak pernah meninggalkan perangkat", invTitle:"FAKTUR", stampPaid:"LUNAS", stampUnpaid:"BELUM LUNAS",
+    hTitle:'Faktur profesional,<br>dalam <em>kurang dari semenit</em>.',
+    hSub:"Isi formulir, lihat faktur terbentuk langsung, lalu cetak atau simpan sebagai PDF. Tanpa daftar, tanpa server — semua terjadi di browser dan hanya tersimpan di perangkatmu.",
+    curLabel:"Mata uang", confirmDel:"Hapus faktur ini?", confirmImport:"Impor cadangan? Ini mengganti semua faktur, klien, dan profil saat ini." }
+};
+let S = loadStore();
 
-function fmt(n) {
-  const cur = $("f-currency").value;
-  return SYMBOLS[cur] + " " + n.toLocaleString(cur === "IDR" ? "id-ID" : "en-US", { maximumFractionDigits: cur === "IDR" ? 0 : 2 });
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function todayPlus(days) { const d = new Date(); d.setDate(d.getDate() + days); return d.toISOString().slice(0, 10); }
+function blankInvoice(num) {
+  return { id: uid(), number: num, client: "", clientmeta: "", currency: "USD", issued: todayPlus(0), due: todayPlus(14),
+    tax: 0, discount: 0, notes: "", payinfo: "", status: "unpaid", items: [{ desc: "", qty: 1, price: 0 }] };
 }
-function todayPlus(days) {
-  const d = new Date(); d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
+function loadStore() {
+  try { const s = JSON.parse(localStorage.getItem(KEY2)); if (s && Array.isArray(s.invoices)) return s; } catch {}
+  const st = { profile: { biz: "Kontenlaris Studio", bizmeta: "kontenlaris.studio@gmail.com", logo: "" },
+    clients: [], invoices: [], currentId: null, settings: { lang: "en", accent: "orange", seq: 1 } };
+  try { const d = JSON.parse(localStorage.getItem(KEY1)); // migrate v1 draft
+    if (d) { const inv = blankInvoice(d.number || "INV-001");
+      Object.assign(inv, { client: d.client || "", clientmeta: d.clientmeta || "", currency: d.currency || "USD",
+        issued: d.issued || todayPlus(0), due: d.due || todayPlus(14), tax: d.tax || 0, discount: d.discount || 0,
+        notes: d.notes || "", items: (d.items && d.items.length) ? d.items : inv.items });
+      st.profile.biz = d.biz || st.profile.biz; st.profile.bizmeta = d.bizmeta || st.profile.bizmeta;
+      st.invoices = [inv]; st.currentId = inv.id; st.settings.seq = 2; return st; } } catch {}
+  const inv = blankInvoice("INV-001");
+  inv.items = [{ desc: "Website design service", qty: 1, price: 499 }, { desc: "AI chatbot add-on", qty: 1, price: 249 }];
+  st.invoices = [inv]; st.currentId = inv.id; st.settings.seq = 2; return st;
 }
-function itemRow(desc = "", qty = 1, price = 0) {
+function save() { try { localStorage.setItem(KEY2, JSON.stringify(S)); } catch {} }
+function cur() { return S.invoices.find((i) => i.id === S.currentId) || S.invoices[0]; }
+function t() { return I18N[S.settings.lang] || I18N.en; }
+function fmt(n, curCode) {
+  const loc = (S.settings.lang === "id" || curCode === "IDR") ? "id-ID" : "en-US";
+  try { return new Intl.NumberFormat(loc, { style: "currency", currency: curCode }).format(n); }
+  catch { return curCode + " " + n.toLocaleString(loc); }
+}
+function fmtDate(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso + "T00:00:00");
+  return isNaN(d) ? iso : d.toLocaleDateString(S.settings.lang === "id" ? "id-ID" : "en-US", { day: "numeric", month: "short", year: "numeric" });
+}
+function calc(inv) {
+  const sub = inv.items.reduce((a, it) => a + (it.qty || 0) * (it.price || 0), 0);
+  const disc = sub * (inv.discount || 0) / 100;
+  const tax = (sub - disc) * (inv.tax || 0) / 100;
+  return { sub, disc, tax, total: sub - disc + tax };
+}
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+
+function itemRow(it) {
   const div = document.createElement("div");
   div.className = "item-row";
-  div.innerHTML = `<input class="i-desc" placeholder="Service or product" value="${desc.replace(/"/g, "&quot;")}">
-    <input class="i-qty" type="number" min="0" step="1" value="${qty}">
-    <input class="i-price" type="number" min="0" step="0.01" value="${price}">
+  div.innerHTML = `<input class="i-desc" placeholder="Service or product" value="${esc(it.desc)}">
+    <input class="i-qty" type="number" min="0" step="1" value="${it.qty ?? 1}">
+    <input class="i-price" type="number" min="0" step="0.01" value="${it.price ?? 0}">
     <button class="icon-btn" title="Remove item">×</button>`;
-  div.querySelector(".icon-btn").onclick = () => { div.remove(); render(); };
-  div.querySelectorAll("input").forEach((i) => i.addEventListener("input", render));
+  div.querySelector(".icon-btn").onclick = () => { div.remove(); sync(); };
+  div.querySelectorAll("input").forEach((i) => i.addEventListener("input", sync));
   return div;
 }
-function collect() {
-  return {
-    biz: $("f-biz").value, bizmeta: $("f-bizmeta").value,
-    client: $("f-client").value, clientmeta: $("f-clientmeta").value,
-    number: $("f-number").value, currency: $("f-currency").value,
-    issued: $("f-issued").value, due: $("f-due").value,
-    tax: parseFloat($("f-tax").value) || 0, discount: parseFloat($("f-discount").value) || 0,
-    notes: $("f-notes").value,
-    items: [...document.querySelectorAll(".item-row")].map((r) => ({
-      desc: r.querySelector(".i-desc").value,
-      qty: parseFloat(r.querySelector(".i-qty").value) || 0,
-      price: parseFloat(r.querySelector(".i-price").value) || 0,
-    })),
-  };
+function fillForm() {
+  const inv = cur(), p = S.profile;
+  $("f-biz").value = p.biz; $("f-bizmeta").value = p.bizmeta;
+  $("logo-thumb").style.display = p.logo ? "" : "none"; if (p.logo) $("logo-thumb").src = p.logo;
+  $("logo-remove").style.display = p.logo ? "" : "none";
+  $("f-client").value = inv.client; $("f-clientmeta").value = inv.clientmeta;
+  $("f-number").value = inv.number; $("f-currency").value = inv.currency;
+  $("f-issued").value = inv.issued; $("f-due").value = inv.due; $("f-status").value = inv.status;
+  $("f-tax").value = inv.tax; $("f-discount").value = inv.discount;
+  $("f-payinfo").value = inv.payinfo; $("f-notes").value = inv.notes;
+  $("f-lang").value = S.settings.lang; $("f-accent").value = S.settings.accent;
+  $("items").innerHTML = ""; inv.items.forEach((it) => $("items").appendChild(itemRow(it)));
+  fillClientPick();
+}
+function fillClientPick() {
+  const sel = $("f-clientpick"), keep = sel.value;
+  sel.innerHTML = '<option value="">—</option>' + S.clients.map((c, i) => `<option value="${i}">${esc(c.name)}</option>`).join("");
+  sel.value = keep;
+}
+function sync() {
+  const inv = cur(); if (!inv) return;
+  S.profile.biz = $("f-biz").value; S.profile.bizmeta = $("f-bizmeta").value;
+  inv.client = $("f-client").value; inv.clientmeta = $("f-clientmeta").value;
+  inv.number = $("f-number").value; inv.currency = $("f-currency").value;
+  inv.issued = $("f-issued").value; inv.due = $("f-due").value; inv.status = $("f-status").value;
+  inv.tax = parseFloat($("f-tax").value) || 0; inv.discount = parseFloat($("f-discount").value) || 0;
+  inv.payinfo = $("f-payinfo").value; inv.notes = $("f-notes").value;
+  inv.items = [...document.querySelectorAll(".item-row")].map((r) => ({
+    desc: r.querySelector(".i-desc").value,
+    qty: parseFloat(r.querySelector(".i-qty").value) || 0,
+    price: parseFloat(r.querySelector(".i-price").value) || 0 }));
+  save(); render();
 }
 function render() {
-  const d = collect();
-  localStorage.setItem(KEY, JSON.stringify(d));
-  $("p-number").textContent = d.number || "—";
-  $("p-issued").textContent = d.issued || "—";
-  $("p-due").textContent = d.due || "—";
-  $("p-biz").textContent = d.biz; $("p-bizmeta").textContent = d.bizmeta;
-  $("p-client").textContent = d.client || "—"; $("p-clientmeta").textContent = d.clientmeta;
-  $("p-notes").textContent = d.notes;
-  $("p-foot-cur").textContent = "Currency: " + d.currency;
-  let subtotal = 0;
-  $("p-items").innerHTML = d.items.map((it) => {
-    const amt = it.qty * it.price; subtotal += amt;
-    return `<tr><td>${it.desc || "—"}</td><td class="num">${it.qty}</td><td class="num">${fmt(it.price)}</td><td class="num">${fmt(amt)}</td></tr>`;
+  const inv = cur(); if (!inv) return;
+  const L = t(), p = S.profile, c = calc(inv);
+  document.documentElement.dataset.accent = S.settings.accent;
+  document.documentElement.lang = S.settings.lang;
+  document.querySelectorAll("[data-i]").forEach((el) => { const v = L[el.dataset.i]; if (v) el.textContent = v; });
+  $("h-title").innerHTML = L.hTitle; $("h-sub").textContent = L.hSub;
+  $("p-title").textContent = L.invTitle;
+  $("p-number").textContent = inv.number || "—";
+  $("p-issued").textContent = fmtDate(inv.issued); $("p-due").textContent = fmtDate(inv.due);
+  $("p-biz").textContent = p.biz; $("p-bizmeta").textContent = p.bizmeta;
+  $("p-client").textContent = inv.client || "—"; $("p-clientmeta").textContent = inv.clientmeta;
+  $("p-logo").style.display = p.logo ? "" : "none"; if (p.logo) $("p-logo").src = p.logo;
+  const st = $("p-stamp");
+  st.textContent = inv.status === "paid" ? L.stampPaid : L.stampUnpaid;
+  st.className = "stamp" + (inv.status === "paid" ? "" : " unpaid");
+  $("p-items").innerHTML = inv.items.map((it) => {
+    const amt = (it.qty || 0) * (it.price || 0);
+    return `<tr><td>${esc(it.desc) || "—"}</td><td class="num">${it.qty}</td><td class="num">${fmt(it.price, inv.currency)}</td><td class="num">${fmt(amt, inv.currency)}</td></tr>`;
   }).join("");
-  const disc = subtotal * d.discount / 100;
-  const tax = (subtotal - disc) * d.tax / 100;
-  $("p-subtotal").textContent = fmt(subtotal);
-  $("row-discount").style.display = d.discount ? "" : "none";
-  $("p-discount").textContent = "− " + fmt(disc);
-  $("row-tax").style.display = d.tax ? "" : "none";
-  $("p-tax").textContent = "+ " + fmt(tax);
-  $("p-total").textContent = fmt(subtotal - disc + tax);
+  $("p-subtotal").textContent = fmt(c.sub, inv.currency);
+  $("row-discount").style.display = inv.discount ? "" : "none";
+  $("p-discount").textContent = "− " + fmt(c.disc, inv.currency);
+  $("row-tax").style.display = inv.tax ? "" : "none";
+  $("p-tax").textContent = "+ " + fmt(c.tax, inv.currency);
+  $("p-total").textContent = fmt(c.total, inv.currency);
+  $("block-pay").style.display = inv.payinfo ? "" : "none";
+  $("p-payinfo").textContent = inv.payinfo;
+  $("p-notes").textContent = inv.notes;
+  $("p-foot-cur").textContent = L.curLabel + ": " + inv.currency;
+  renderList();
 }
-function load() {
-  let d = null;
-  try { d = JSON.parse(localStorage.getItem(KEY)); } catch {}
-  if (!d) {
-    $("f-issued").value = todayPlus(0); $("f-due").value = todayPlus(14);
-    $("items").appendChild(itemRow("Website design service", 1, 499));
-    $("items").appendChild(itemRow("AI chatbot add-on", 1, 249));
-  } else {
-    for (const k of ["biz","bizmeta","client","clientmeta","number","issued","due","notes"]) $( "f-" + k).value = d[k] ?? "";
-    $("f-currency").value = d.currency || "USD";
-    $("f-tax").value = d.tax ?? 0; $("f-discount").value = d.discount ?? 0;
-    (d.items && d.items.length ? d.items : [{}]).forEach((it) => $("items").appendChild(itemRow(it.desc || "", it.qty ?? 1, it.price ?? 0)));
-  }
-  document.querySelectorAll("input,select,textarea").forEach((el) => el.addEventListener("input", render));
-  render();
+function renderList() {
+  const L = t();
+  $("inv-list").innerHTML = S.invoices.map((inv) => {
+    const c = calc(inv);
+    return `<div class="inv-item ${inv.id === S.currentId ? "active" : ""}" data-id="${inv.id}">
+      <span><b>${esc(inv.number) || "—"}</b> · ${esc(inv.client) || "—"}<br><span class="meta">${fmtDate(inv.issued)} · ${fmt(c.total, inv.currency)}</span></span>
+      <span class="pill ${inv.status}">${inv.status === "paid" ? L.stampPaid : L.stampUnpaid}</span></div>`;
+  }).join("");
+  document.querySelectorAll(".inv-item").forEach((el) => el.onclick = () => { S.currentId = el.dataset.id; save(); fillForm(); render(); });
 }
-$("add-item").onclick = () => { $("items").appendChild(itemRow()); render(); };
+
+/* Logo upload: downscale to max 360px wide so localStorage stays small */
+$("f-logo").addEventListener("change", () => {
+  const f = $("f-logo").files[0]; if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    const scale = Math.min(1, 360 / img.width);
+    const cv = document.createElement("canvas");
+    cv.width = Math.round(img.width * scale); cv.height = Math.round(img.height * scale);
+    cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+    S.profile.logo = cv.toDataURL(f.type === "image/png" ? "image/png" : "image/jpeg", 0.88);
+    URL.revokeObjectURL(img.src); save(); fillForm(); render();
+  };
+  img.src = URL.createObjectURL(f);
+});
+$("logo-remove").onclick = () => { S.profile.logo = ""; $("f-logo").value = ""; save(); fillForm(); render(); };
+
+$("client-save").onclick = () => {
+  const name = $("f-client").value.trim(); if (!name) return;
+  const ex = S.clients.find((c) => c.name.toLowerCase() === name.toLowerCase());
+  if (ex) ex.meta = $("f-clientmeta").value; else S.clients.push({ name, meta: $("f-clientmeta").value });
+  save(); fillClientPick();
+};
+$("client-del").onclick = () => {
+  const i = parseInt($("f-clientpick").value); if (isNaN(i)) return;
+  S.clients.splice(i, 1); save(); fillClientPick();
+};
+$("f-clientpick").addEventListener("change", () => {
+  const c = S.clients[parseInt($("f-clientpick").value)]; if (!c) return;
+  $("f-client").value = c.name; $("f-clientmeta").value = c.meta; sync();
+});
+
+$("inv-new").onclick = () => {
+  const inv = blankInvoice("INV-" + String(S.settings.seq).padStart(3, "0"));
+  S.settings.seq++; S.invoices.unshift(inv); S.currentId = inv.id;
+  save(); fillForm(); render();
+};
+$("inv-dup").onclick = () => {
+  const src = cur(); if (!src) return;
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = uid(); copy.number = "INV-" + String(S.settings.seq).padStart(3, "0"); S.settings.seq++;
+  S.invoices.unshift(copy); S.currentId = copy.id; save(); fillForm(); render();
+};
+$("inv-del").onclick = () => {
+  if (!confirm(t().confirmDel)) return;
+  S.invoices = S.invoices.filter((i) => i.id !== S.currentId);
+  if (!S.invoices.length) { const inv = blankInvoice("INV-" + String(S.settings.seq).padStart(3, "0")); S.settings.seq++; S.invoices = [inv]; }
+  S.currentId = S.invoices[0].id; save(); fillForm(); render();
+};
+
+$("export-btn").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: "application/json" }));
+  a.download = "invoicekit-backup.json"; a.click(); URL.revokeObjectURL(a.href);
+};
+$("import-btn").onclick = () => $("f-import").click();
+$("f-import").addEventListener("change", () => {
+  const f = $("f-import").files[0]; if (!f) return;
+  f.text().then((txt) => {
+    try { const s = JSON.parse(txt);
+      if (!s || !Array.isArray(s.invoices) || !s.profile || !s.settings) throw 0;
+      if (!confirm(t().confirmImport)) return;
+      S = s; if (!S.invoices.find((i) => i.id === S.currentId)) S.currentId = S.invoices[0] && S.invoices[0].id;
+      save(); fillForm(); render();
+    } catch { alert("Invalid backup file."); }
+  });
+});
+
+$("f-lang").addEventListener("change", () => { S.settings.lang = $("f-lang").value; save(); render(); });
+$("f-accent").addEventListener("change", () => { S.settings.accent = $("f-accent").value; save(); render(); });
+$("add-item").onclick = () => { $("items").appendChild(itemRow({ desc: "", qty: 1, price: 0 })); sync(); };
 $("print-btn").onclick = () => window.print();
-$("reset-btn").onclick = () => { localStorage.removeItem(KEY); location.reload(); };
-load();
+document.querySelectorAll("input,select,textarea").forEach((el) => {
+  if (["f-logo", "f-import", "f-clientpick", "f-lang", "f-accent"].includes(el.id)) return;
+  el.addEventListener("input", sync); el.addEventListener("change", sync);
+});
+fillForm(); render();
 </script>
 </body>
 </html>

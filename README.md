@@ -6,10 +6,23 @@ A professional invoice in under a minute, right in your browser. Fill the form, 
 
 ## Why it's different
 
-- **Private by design** — no sign-up, no server, no uploads. Your draft auto-saves to your own browser's local storage and never leaves your device.
-- **Real invoice math** — line items, quantities, percentage discount, percentage tax, multi-currency formatting (USD, IDR, EUR, GBP, SGD) with locale-correct numbers.
+- **Private by design** — no sign-up, no server, no uploads. Everything auto-saves to your own browser's local storage and never leaves your device.
+- **Real invoice math** — line items, quantities, percentage discount, percentage tax, multi-currency formatting (USD, IDR, EUR, GBP, SGD, JPY, AUD, MYR) with locale-correct numbers.
 - **Print-perfect** — a dedicated print stylesheet hides the editor and prints only the clean invoice.
-- **Zero dependencies** — one self-contained HTML file (~13 KB). No build step, no framework, works offline once loaded.
+- **Zero dependencies** — one self-contained HTML file. No build step, no framework, works offline once loaded.
+
+## v2 features
+
+1. **Business logo upload** — downscaled and stored locally, shown on the invoice and in print.
+2. **Many invoices, one place** — save, switch, duplicate and delete invoices; everything auto-saves as you type.
+3. **Automatic invoice numbers** — sequential INV-001, INV-002, … (still editable), with issue & due dates.
+4. **PAID / UNPAID stamp** — a print-ready status stamp on every invoice.
+5. **English / Bahasa Indonesia** — full UI and invoice language toggle.
+6. **Saved clients + business profile** — your business details persist across invoices; save clients once, autofill forever.
+7. **Backup & restore** — export all invoices, clients and profile to one JSON file; import it on any device.
+8. **Accent colors** — orange, teal, violet or rose invoice accents.
+9. **8 currencies** — USD, IDR, EUR, GBP, SGD, JPY, AUD, MYR with correct decimals per currency.
+10. **Payment instructions** — a dedicated block for bank account, QRIS or e-wallet details, separate from notes.
 
 ## Use it
 
