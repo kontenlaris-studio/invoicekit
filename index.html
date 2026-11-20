@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InvoiceKit — Free Invoice Generator</title>
+<meta name="description" content="Create a clean, professional invoice in your browser in under a minute. No sign-up, no server — your data never leaves your device. Print or save as PDF free.">
+<style>
+  :root{
+    --navy:#0a1931; --navy2:#10254a; --orange:#ff7a00; --ink:#14213d; --mut:#66788f;
+    --line:#e3e9f2; --bg:#f4f6fb; --card:#ffffff; --ok:#0e7a3d;
+    --radius:14px; --shadow:0 10px 30px rgba(10,25,49,.10);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:34px 20px 30px}
+  .wrap{max-width:1180px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:.2px}
+  .brand .dot{width:12px;height:12px;border-radius:3px;background:var(--orange)}
+  header h1{margin:16px 0 6px;font-size:32px;line-height:1.15}
+  header h1 em{color:var(--orange);font-style:normal}
+  header p{margin:0;color:#c9d4e5;max-width:640px}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .badge{border:1px solid rgba(255,255,255,.28);color:#e6edf3;border-radius:999px;padding:3px 11px;font-size:12.5px}
+  main{padding:22px 20px 40px}
+  .grid{display:grid;grid-template-columns:400px 1fr;gap:20px;align-items:start}
+  @media (max-width:920px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .panel{padding:18px}
+  .panel h2{margin:0 0 12px;font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--navy)}
+  label{display:block;font-size:12.5px;color:var(--mut);margin:10px 0 4px}
+  input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:9px;font:inherit;background:#fbfcfe}
+  input:focus,select:focus,textarea:focus{outline:2px solid rgba(255,122,0,.45);border-color:var(--orange);background:#fff}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .items-head,.item-row{display:grid;grid-template-columns:1fr 62px 92px 34px;gap:8px;align-items:end}
+  .items-head{font-size:12px;color:var(--mut);margin-top:6px}
+  .item-row{margin-top:8px}
+  .icon-btn{border:1px solid var(--line);background:#fff;border-radius:9px;height:38px;cursor:pointer;color:#a11;font-size:16px}
+  .btn{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600}
+  .btn-ghost{background:#eef2f8;color:var(--navy)}
+  .btn-primary{background:var(--orange);color:#fff}
+  .btn-dark{background:var(--navy);color:#fff}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .hint{font-size:12.5px;color:var(--mut);margin-top:10px}
+  /* Invoice preview */
+  .preview{padding:34px 38px;min-height:640px}
+  .inv-top{display:flex;justify-content:space-between;gap:20px;border-bottom:3px solid var(--navy);padding-bottom:16px}
+  .inv-title{font-size:30px;font-weight:800;letter-spacing:2px;color:var(--navy)}
+  .inv-meta{text-align:right;color:var(--mut);font-size:13.5px}
+  .inv-meta b{color:var(--ink)}
+  .parties{display:flex;justify-content:space-between;gap:24px;margin:20px 0 6px;flex-wrap:wrap}
+  .party h3{margin:0 0 4px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut)}
+  .party .name{font-weight:700;font-size:16px}
+  .party div{white-space:pre-wrap}
+  table{width:100%;border-collapse:collapse;margin-top:14px}
+  th{background:var(--navy);color:#fff;text-align:left;padding:9px 10px;font-size:13px}
+  th.num,td.num{text-align:right}
+  td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .totals{margin-left:auto;width:290px;margin-top:14px}
+  .totals .row{display:flex;justify-content:space-between;padding:5px 0;color:var(--mut)}
+  .totals .grand{border-top:2px solid var(--navy);margin-top:6px;padding-top:10px;font-size:17px;font-weight:800;color:var(--navy)}
+  .totals .grand span:last-child{color:var(--orange)}
+  .notes{margin-top:22px;color:var(--mut);font-size:13.5px;white-space:pre-wrap}
+  .inv-foot{margin-top:30px;border-top:1px solid var(--line);padding-top:10px;font-size:12px;color:var(--mut);display:flex;justify-content:space-between}
+  footer{padding:24px 20px 40px;color:var(--mut);text-align:center;font-size:13px}
+  footer a{color:var(--navy)}
+  @media print{
+    header, .panel, footer, .actions-bar{display:none !important}
+    body{background:#fff}
+    main{padding:0}
+    .grid{grid-template-columns:1fr}
+    .preview{box-shadow:none;border:0;min-height:auto}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>InvoiceKit</div>
+    <h1>A professional invoice,<br>in <em>under a minute</em>.</h1>
+    <p>Fill the form, watch the invoice build itself, then print or save it as PDF. No sign-up, no server — everything happens in your browser and is saved only on your device.</p>
+    <div class="badges"><span class="badge">100% free</span><span class="badge">No account</span><span class="badge">Private by design</span><span class="badge">USD · IDR · EUR · GBP · SGD</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap grid">
+    <section class="card panel" aria-label="Invoice details">
+      <h2>Your business</h2>
+      <label>Business name</label><input id="f-biz" value="Kontenlaris Studio">
+      <label>Business details (address, email, tax id)</label><textarea id="f-bizmeta" rows="2">kontenlaris.studio@gmail.com</textarea>
+
+      <h2 style="margin-top:20px">Client</h2>
+      <label>Client name</label><input id="f-client" placeholder="e.g. PT Sinar Abadi">
+      <label>Client details</label><textarea id="f-clientmeta" rows="2" placeholder="Address, email"></textarea>
+
+      <h2 style="margin-top:20px">Invoice</h2>
+      <div class="two">
+        <div><label>Invoice number</label><input id="f-number" value="INV-001"></div>
+        <div><label>Currency</label>
+          <select id="f-currency">
+            <option value="USD">USD — $</option><option value="IDR">IDR — Rp</option>
+            <option value="EUR">EUR — €</option><option value="GBP">GBP — £</option>
+            <option value="SGD">SGD — S$</option>
+          </select></div>
+        <div><label>Issue date</label><input id="f-issued" type="date"></div>
+        <div><label>Due date</label><input id="f-due" type="date"></div>
+      </div>
+
+      <h2 style="margin-top:20px">Items</h2>
+      <div class="items-head"><span>Description</span><span>Qty</span><span>Price</span><span></span></div>
+      <div id="items"></div>
+      <div class="actions"><button class="btn btn-ghost" id="add-item">+ Add item</button></div>
+
+      <div class="two">
+        <div><label>Tax % (0 = none)</label><input id="f-tax" type="number" min="0" step="0.1" value="0"></div>
+        <div><label>Discount %</label><input id="f-discount" type="number" min="0" step="0.1" value="0"></div>
+      </div>
+
+      <label>Notes (payment details, thank-you)</label>
+      <textarea id="f-notes" rows="3">Payment via bank transfer / PayPal. Thank you for your business.</textarea>
+
+      <div class="actions actions-bar">
+        <button class="btn btn-primary" id="print-btn">Print / Save PDF</button>
+        <button class="btn btn-ghost" id="reset-btn">Reset</button>
+      </div>
+      <p class="hint">Your draft auto-saves in this browser. Nothing is uploaded anywhere.</p>
+    </section>
+
+    <section class="card preview" aria-label="Invoice preview">
+      <div class="inv-top">
+        <div class="inv-title">INVOICE</div>
+        <div class="inv-meta">
+          <div>Number&nbsp; <b id="p-number"></b></div>
+          <div>Issued&nbsp; <b id="p-issued"></b></div>
+          <div>Due&nbsp; <b id="p-due"></b></div>
+        </div>
+      </div>
+      <div class="parties">
+        <div class="party"><h3>From</h3><div class="name" id="p-biz"></div><div id="p-bizmeta"></div></div>
+        <div class="party"><h3>Billed to</h3><div class="name" id="p-client"></div><div id="p-clientmeta"></div></div>
+      </div>
+      <table>
+        <thead><tr><th>Description</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Amount</th></tr></thead>
+        <tbody id="p-items"></tbody>
+      </table>
+      <div class="totals">
+        <div class="row"><span>Subtotal</span><span id="p-subtotal"></span></div>
+        <div class="row" id="row-discount"><span>Discount</span><span id="p-discount"></span></div>
+        <div class="row" id="row-tax"><span>Tax</span><span id="p-tax"></span></div>
+        <div class="row grand"><span>Total due</span><span id="p-total"></span></div>
+      </div>
+      <div class="notes" id="p-notes"></div>
+      <div class="inv-foot"><span>Made with InvoiceKit — free invoice generator</span><span id="p-foot-cur"></span></div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">InvoiceKit by <a href="https://github.com/kontenlaris-studio">Kontenlaris Studio</a> · Free forever · Your data never leaves your device · <a href="https://github.com/kontenlaris-studio/invoicekit">Source on GitHub</a></div>
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const KEY = "invoicekit.draft.v1";
+const SYMBOLS = { USD: "$", IDR: "Rp", EUR: "€", GBP: "£", SGD: "S$" };
+
+function fmt(n) {
+  const cur = $("f-currency").value;
+  return SYMBOLS[cur] + " " + n.toLocaleString(cur === "IDR" ? "id-ID" : "en-US", { maximumFractionDigits: cur === "IDR" ? 0 : 2 });
+}
+function todayPlus(days) {
+  const d = new Date(); d.setDate(d.getDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+function itemRow(desc = "", qty = 1, price = 0) {
+  const div = document.createElement("div");
+  div.className = "item-row";
+  div.innerHTML = `<input class="i-desc" placeholder="Service or product" value="${desc.replace(/"/g, "&quot;")}">
+    <input class="i-qty" type="number" min="0" step="1" value="${qty}">
+    <input class="i-price" type="number" min="0" step="0.01" value="${price}">
+    <button class="icon-btn" title="Remove item">×</button>`;
+  div.querySelector(".icon-btn").onclick = () => { div.remove(); render(); };
+  div.querySelectorAll("input").forEach((i) => i.addEventListener("input", render));
+  return div;
+}
+function collect() {
+  return {
+    biz: $("f-biz").value, bizmeta: $("f-bizmeta").value,
+    client: $("f-client").value, clientmeta: $("f-clientmeta").value,
+    number: $("f-number").value, currency: $("f-currency").value,
+    issued: $("f-issued").value, due: $("f-due").value,
+    tax: parseFloat($("f-tax").value) || 0, discount: parseFloat($("f-discount").value) || 0,
+    notes: $("f-notes").value,
+    items: [...document.querySelectorAll(".item-row")].map((r) => ({
+      desc: r.querySelector(".i-desc").value,
+      qty: parseFloat(r.querySelector(".i-qty").value) || 0,
+      price: parseFloat(r.querySelector(".i-price").value) || 0,
+    })),
+  };
+}
+function render() {
+  const d = collect();
+  localStorage.setItem(KEY, JSON.stringify(d));
+  $("p-number").textContent = d.number || "—";
+  $("p-issued").textContent = d.issued || "—";
+  $("p-due").textContent = d.due || "—";
+  $("p-biz").textContent = d.biz; $("p-bizmeta").textContent = d.bizmeta;
+  $("p-client").textContent = d.client || "—"; $("p-clientmeta").textContent = d.clientmeta;
+  $("p-notes").textContent = d.notes;
+  $("p-foot-cur").textContent = "Currency: " + d.currency;
+  let subtotal = 0;
+  $("p-items").innerHTML = d.items.map((it) => {
+    const amt = it.qty * it.price; subtotal += amt;
+    return `<tr><td>${it.desc || "—"}</td><td class="num">${it.qty}</td><td class="num">${fmt(it.price)}</td><td class="num">${fmt(amt)}</td></tr>`;
+  }).join("");
+  const disc = subtotal * d.discount / 100;
+  const tax = (subtotal - disc) * d.tax / 100;
+  $("p-subtotal").textContent = fmt(subtotal);
+  $("row-discount").style.display = d.discount ? "" : "none";
+  $("p-discount").textContent = "− " + fmt(disc);
+  $("row-tax").style.display = d.tax ? "" : "none";
+  $("p-tax").textContent = "+ " + fmt(tax);
+  $("p-total").textContent = fmt(subtotal - disc + tax);
+}
+function load() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(KEY)); } catch {}
+  if (!d) {
+    $("f-issued").value = todayPlus(0); $("f-due").value = todayPlus(14);
+    $("items").appendChild(itemRow("Website design service", 1, 499));
+    $("items").appendChild(itemRow("AI chatbot add-on", 1, 249));
+  } else {
+    for (const k of ["biz","bizmeta","client","clientmeta","number","issued","due","notes"]) $( "f-" + k).value = d[k] ?? "";
+    $("f-currency").value = d.currency || "USD";
+    $("f-tax").value = d.tax ?? 0; $("f-discount").value = d.discount ?? 0;
+    (d.items && d.items.length ? d.items : [{}]).forEach((it) => $("items").appendChild(itemRow(it.desc || "", it.qty ?? 1, it.price ?? 0)));
+  }
+  document.querySelectorAll("input,select,textarea").forEach((el) => el.addEventListener("input", render));
+  render();
+}
+$("add-item").onclick = () => { $("items").appendChild(itemRow()); render(); };
+$("print-btn").onclick = () => window.print();
+$("reset-btn").onclick = () => { localStorage.removeItem(KEY); location.reload(); };
+load();
+</script>
+</body>
+</html>
