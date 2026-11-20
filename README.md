@@ -26,3 +26,7 @@ MIT — see `LICENSE`.
 ---
 
 <sub>Built by [Kontenlaris Studio](https://github.com/kontenlaris-studio) · More tools: [PromptVault extension](https://github.com/kontenlaris-studio/promptkeep) · Live AI apps on [SkillSafe](https://skillsafe.ai/share/shr_pm3czpuh2gr8)</sub>
+
+## Also on SkillSafe
+
+The InvoiceKit engine is published as a scan-verified skill with a hosted app: [InvoiceKit Maker](https://invoicekit-maker.skillsafe.ai) · skill [@kontenlaris-studio/invoice-generator](https://skillsafe.ai/share/shr_s5v0p0b4fkq9).
